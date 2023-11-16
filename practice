@@ -1,0 +1,162 @@
+mysql> CREATE DATABASE shop_app;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| shop_app           |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| shop_app           |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> USE shop_app;
+Database changed
+mysql> CREATE TABLE items(id INT AUTO_INCREMENT, name TEXT, price INT, category TEXT, PRIMARY KEY(id)) DEFAULT CHARSET=utf8;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_shop_app |
++--------------------+
+| items              |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> insert into items(name, orice, category) values('にんじん', 60, '野菜');
+ERROR 1054 (42S22): Unknown column 'orice' in 'field list'
+mysql> INSERT INTO items(name, price, category) VALUES ('にんじん', 60, '野菜');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO items(name, price, category) VALUES ('バナナ', 200, '果物');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO items(name, price, category) VALUES ('牛乳', 120, '飲料');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM items;
++----+----------+-------+----------+
+| id | name     | price | category |
++----+----------+-------+----------+
+|  1 | にんじん |    60 | 野菜     |
+|  2 | バナナ   |   200 | 果物     |
+|  3 | 牛乳     |   120 | 飲料     |
++----+----------+-------+----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM items;
++----+----------+-------+----------+
+| id | name     | price | category |
++----+----------+-------+----------+
+|  1 | にんじん |    60 | 野菜     |
+|  2 | バナナ   |   200 | 果物     |
+|  3 | 牛乳     |   120 | 飲料     |
++----+----------+-------+----------+
+3 rows in set (0.00 sec)
+
+mysql> alter table items add column stock int ;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from items ;
++----+----------+-------+----------+-------+
+| id | name     | price | category | stock |
++----+----------+-------+----------+-------+
+|  1 | にんじん |    60 | 野菜     |  NULL |
+|  2 | バナナ   |   200 | 果物     |  NULL |
+|  3 | 牛乳     |   120 | 飲料     |  NULL |
++----+----------+-------+----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> update items set stock = 100 where id = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from items ;
++----+----------+-------+----------+-------+
+| id | name     | price | category | stock |
++----+----------+-------+----------+-------+
+|  1 | にんじん |    60 | 野菜     |   100 |
+|  2 | バナナ   |   200 | 果物     |  NULL |
+|  3 | 牛乳     |   120 | 飲料     |  NULL |
++----+----------+-------+----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> update items set stock = 150 where id = 2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update items set stock = 80  where id = 3;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from items ;
++----+----------+-------+----------+-------+
+| id | name     | price | category | stock |
++----+----------+-------+----------+-------+
+|  1 | にんじん |    60 | 野菜     |   100 |
+|  2 | バナナ   |   200 | 果物     |   150 |
+|  3 | 牛乳     |   120 | 飲料     |    80 |
++----+----------+-------+----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> describe items ;
++----------+---------+------+-----+---------+----------------+
+| Field    | Type    | Null | Key | Default | Extra          |
++----------+---------+------+-----+---------+----------------+
+| id       | int(11) | NO   | PRI | NULL    | auto_increment |
+| name     | text    | YES  |     | NULL    |                |
+| price    | int(11) | YES  |     | NULL    |                |
+| category | text    | YES  |     | NULL    |                |
+| stock    | int(11) | YES  |     | NULL    |                |
++----------+---------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table items change column price cost int ;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from items ;
++----+----------+------+----------+-------+
+| id | name     | cost | category | stock |
++----+----------+------+----------+-------+
+|  1 | にんじん |   60 | 野菜     |   100 |
+|  2 | バナナ   |  200 | 果物     |   150 |
+|  3 | 牛乳     |  120 | 飲料     |    80 |
++----+----------+------+----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table items drop column category ;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from items ;
++----+----------+------+-------+
+| id | name     | cost | stock |
++----+----------+------+-------+
+|  1 | にんじん |   60 |   100 |
+|  2 | バナナ   |  200 |   150 |
+|  3 | 牛乳     |  120 |    80 |
++----+----------+------+-------+
+3 rows in set (0.00 sec)
+
+mysql>
